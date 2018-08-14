@@ -59,9 +59,9 @@ typedef struct opensl_stream {
     SLEffectSendItf bqPlayerEffectSend;
 
     // recorder interfaces
-    SLObjectItf recorderObject;
-    SLRecordItf recorderRecord;
-    SLAndroidSimpleBufferQueueItf recorderBufferQueue;
+//    SLObjectItf recorderObject;
+//    SLRecordItf recorderRecord;
+//    SLAndroidSimpleBufferQueueItf recorderBufferQueue;
 
     // buffer indexes
     int currentInputIndex;
@@ -115,6 +115,11 @@ int android_AudioOut(OPENSL_STREAM *p, short *buffer,int size);
   Get the current IO block time in seconds
 */
 double android_GetTimestamp(OPENSL_STREAM *p);
+
+/*
+ * Get min audio buffer size
+ */
+int android_GetAudioMinBufferSize(int sampleRateInHz, int channelConfig, int audioFormat);
 
 #ifdef __cplusplus
 };

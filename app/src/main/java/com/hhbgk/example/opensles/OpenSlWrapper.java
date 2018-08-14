@@ -9,11 +9,19 @@ public final class OpenSlWrapper {
 
     private native boolean nativeStopCapture();
 
-    private native boolean nativeStartPlayback();
+    private native boolean nativeStartPlayback(byte[] data);
 
     private native boolean nativeStopPlayback();
 
     static {
         System.loadLibrary("native-lib");
+    }
+
+    public boolean startPlayback(byte[] data) {
+        return nativeStartPlayback(data);
+    }
+
+    public boolean stopPlayback() {
+        return nativeStopPlayback();
     }
 }

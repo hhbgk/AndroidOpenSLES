@@ -169,7 +169,7 @@ static SLresult openSLPlayOpen(OPENSL_STREAM *p)
 
     return SL_RESULT_SUCCESS;
 }
-
+/*
 // Open the OpenSL ES device for input
 static SLresult openSLRecOpen(OPENSL_STREAM *p)
 {
@@ -271,7 +271,7 @@ static SLresult openSLRecOpen(OPENSL_STREAM *p)
     else
         return SL_RESULT_SUCCESS;
 }
-
+*/
 // close the OpenSL IO and destroy the audio engine
 static void openSLDestroyEngine(OPENSL_STREAM *p)
 {
@@ -283,7 +283,7 @@ static void openSLDestroyEngine(OPENSL_STREAM *p)
         p->bqPlayerBufferQueue = NULL;
         p->bqPlayerEffectSend = NULL;
     }
-
+/*
     // destroy audio recorder object, and invalidate all associated interfaces
     if (p->recorderObject != NULL) {
         (*p->recorderObject)->Destroy(p->recorderObject);
@@ -291,7 +291,7 @@ static void openSLDestroyEngine(OPENSL_STREAM *p)
         p->recorderRecord = NULL;
         p->recorderBufferQueue = NULL;
     }
-
+*/
     // destroy output mix object, and invalidate all associated interfaces
     if (p->outputMixObject != NULL) {
         (*p->outputMixObject)->Destroy(p->outputMixObject);
@@ -343,12 +343,12 @@ OPENSL_STREAM *android_OpenAudioDevice(int sr, int inchannels, int outchannels, 
         android_CloseAudioDevice(p);
         return NULL;
     }
-
+/*
     if(openSLRecOpen(p) != SL_RESULT_SUCCESS) {
         android_CloseAudioDevice(p);
         return NULL;
     }
-
+*/
     if(openSLPlayOpen(p) != SL_RESULT_SUCCESS) {
         android_CloseAudioDevice(p);
         return NULL;
@@ -416,7 +416,7 @@ void bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context)
     OPENSL_STREAM *p = (OPENSL_STREAM *) context;
     notifyThreadLock(p->inlock);
 }
-
+/*
 // gets a buffer of size samples from the device
 int android_AudioIn(OPENSL_STREAM *p,short *buffer,int size)
 {
@@ -439,7 +439,7 @@ int android_AudioIn(OPENSL_STREAM *p,short *buffer,int size)
     if(p->outchannels == 0) p->time += (double) size/(p->sr*p->inchannels);
     return i;
 }
-
+*/
 // this callback handler is called every time a buffer finishes playing
 void bqPlayerCallback(SLAndroidSimpleBufferQueueItf bq, void *context)
 {
@@ -528,4 +528,13 @@ void destroyThreadLock(void *lock)
     pthread_cond_destroy(&(p->c));
     pthread_mutex_destroy(&(p->m));
     free(p);
+}
+int android_GetAudioMinBufferSize(int sampleRateInHz, int channelConfig, int audioFormat)
+{
+//#define SAMPLERATE 8000//44100
+//#define CHANNELS 1
+//#define PERIOD_TIME 1000//20 //ms
+//#define FRAME_SIZE SAMPLERATE*PERIOD_TIME/1000
+//#define BUFFER_SIZE FRAME_SIZE*CHANNELS
+    return (sampleRateInHz * 1000 / 1000 * channelConfig);
 }
